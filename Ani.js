@@ -191,9 +191,9 @@ Ani.Frame=function()
 }
 
 
-Ani.setValue=function(elem,value,type,arr_pname)
+Ani.setValue=function(elem,value,type,arr_pname)//在这里扩展更多的属性设置方法
 {
-    if(type=="css_px")//这时arr_pname只有一层，是一个字符串
+    if(type=="css_px")//这时arr_pname只有一层，是一个字符串，处理颜色时则可能是3维数组
     {
         elem.style[arr_pname]=value+"px";
     }
@@ -202,7 +202,7 @@ Ani.setValue=function(elem,value,type,arr_pname)
         elem.style["transform"]="rotate("+value+"deg)";
     }
 }
-Ani.obj_func_ease={
+Ani.obj_func_ease={//在这里扩展更多的插值方法
     //单浮点数线性
     float_line:function(key1,key2,countms){
         var ms1=key1.ms;
