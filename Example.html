@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>为若干个标签添加若干个动画，动画要有变化属性（默认为样式属性）、动画名、属性值类型、是否循环、多关键帧、ease函数（默认为线性）、有添加方法、删除方法</title>
+    <style>
+        .div_ani {background: red;width: 100px;height:100px;position:relative}
+    </style>
+    <script src="Ani.js"></script>
+</head>
+<body>
+    <div class="div_ani">111</div>
+    <div class="div_ani">222</div>
+</body>
+<!--script type="module"-->
+<script>
+	//import Ani from './ani.js'
+    let objs1=document.querySelector(".div_ani");
+    let objs2=document.querySelectorAll(".div_ani");
+	Ani.addAni(objs2,[
+    {
+      arr_pname:"width",loop:true,endcallback:function(){console.log("动画结束")}//动画属性
+      ,arr_key:[//关键帧数组
+        {ms:0,value:100,callback:function(ani){console.log(ani.elem.innerHTML+"第0ms")}},
+        {ms:1000,value:300,callback:function(){console.log("第1000ms")}},
+        {ms:2000,value:100,callback:function(){console.log("第2000ms")}},
+      ]
+    }
+  ]//addAni的第一个参数可以是dom对象或dom对象数组，第二个参数是动画对象数组
+	)
+  //可以多次执行addAni添加更多动画
+	Ani.startAni();//启动所有动画
+	
+
+
+
+    
+</script>
+</html>
