@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="MyScrolly.js"></script>
+</head>
+<body>
+<div id="div_allbase" style="width: 800px;height: 600px;background-color: beige;overflow-y: hidden">
+    <div id="div_outer" style="width: 700px;height: 500px;background-color: cornflowerblue;overflow-y: auto">
+        <div id="div_inner1" style="width: 600px;height: 300px;background-color: darkseagreen">
+111111111111111111111111111111111111111111111111111111111111111
+        </div>
+        <div id="div_inner2" style="width: 600px;height: 300px;margin-top: 50px;background-color: darkseagreen"">
+222222222222222222222222222222222222222222222222222222222222222
+        </div>
+        <div id="div_inner3" style="width: 600px;height: 300px;margin-top: 50px;background-color: darkseagreen"">
+333333333333333333333333333333333333333333333333333333333333333
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    var myScroll=new MyScrolly(document.getElementById("div_outer")
+        ,{parentelem:document.getElementById("div_allbase")})
+    myScroll.func_count(myScroll);
+</script>
+</html>
