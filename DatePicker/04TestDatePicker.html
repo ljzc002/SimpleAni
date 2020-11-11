@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试日历控件</title>
+    <style>
+        #div1{
+            width: 256px;
+            height: 202px;
+            box-sizing: border-box;
+            background-color: #fff;
+            box-shadow: 1px 1px 3px #999;
+            position:absolute;
+            left:0px;
+        }
+        #div2 {
+            width: 236px;
+            height: 166px;
+            box-sizing: border-box;
+            background-color: #fff;
+            box-shadow: 1px 1px 3px #999;
+            position:absolute;
+            left:300px;
+        }
+        .select_date{
+            padding-left: 10px;box-sizing:border-box;width: 100px;height: 30px;background-color: #fff;font-size: 12px;float: left;line-height: 30px;
+        }
+        .span_rq{
+            width: 60px;display: inline-block;
+        }
+    </style>
+    <script src="DatePicker.js"></script>
+</head>
+<body>
+<div id="div_all_base" style="background-color: beige">
+    <div id="div1">
+
+    </div>
+    <div id="div2">
+
+    </div>
+    <div style="width: 600px;height: 30px;left:600px;position:absolute;float:left" id="div3">
+        <div style="float: left;line-height: 30px;margin-left: 10px;font-size: 12px;">从</div>
+        <div class="select_date"><span class="span_rq">开始日期</span><img src="image/rili2.jpg" style="margin-left: 10px;width: 20px;margin-top: 6px;cursor: pointer" alt="" onclick="var divs=div_rilis.getElementsByClassName('div_rili');divs[0].style.display='block';divs[1].style.display='none'"></div>
+        <div style="position: absolute;width:256px;height: 202px;top:50px;display: none" class="div_rili"></div>
+        <div style="float: left;line-height: 30px;margin-left: 10px;font-size: 12px;">到</div>
+        <div class="select_date"><span class="span_rq">结束日期</span><img src="image/rili2.jpg" style="margin-left: 10px;width: 20px;margin-top: 6px;cursor: pointer" alt=""  onclick="var divs=div_rilis.getElementsByClassName('div_rili');divs[1].style.display='block';divs[0].style.display='none'"></div>
+        <div style="position: absolute;width:256px;height: 202px;top:50px;left:120px;display: none" class="div_rili"></div>
+    </div>
+</div>
+</body>
+<script>
+    var div_rilis=document.getElementById("div3");
+
+    var apiHost="http://10.16.10.116/api/v1";
+    var data_enabledate={list_enabledate:[{CBRQ:20201111},{CBRQ:20201112},{CBRQ:20201113},{CBRQ:20201114},{CBRQ:20201115}],type:"ok"};
+    //用AJAX从后端查询可选日期
+    //var datepicker1=new DatePicker("datepicker1",{pickcallback:loadPage,bannerBackColor:"rgb(0,112,192)",searchEnableUrl:apiHost+"/public/searchEnableDate"});//
+    //直接用前端数据，设置了点击回调、banner颜色、激活日期
+    var datepicker1=new DatePicker("datepicker1",{pickcallback:loadPage,bannerBackColor:"rgb(0,112,192)",searchEnableUrl:data_enabledate});
+    var div_rili1=document.getElementById("div1");
+    div_rili1.appendChild(datepicker1.div);
+    datepicker1.reloadDateList();
+
+    //设置更多的配置项，被点击的按钮变色，程序可以在一定的范围内根据外围div的大小调整每个按钮的尺寸，另外设置了字体大小，以及允许点击未激活日期
+    var datepicker2=new DatePicker("datepicker2",{
+        pickcallback:function(str_date,that){
+            datepicker2.pick0(str_date);
+            loadPage(str_date);
+        },bannerBackColor:"rgb(0,112,192)",width:236,height:166,shadowSize:0,paddingSize:0,
+        searchEnableUrl:data_enabledate,contentFontSize:9,flag_canPickUnEnabled:true,
+    });
+    var div_rili2=document.getElementById("div2");
+    div_rili2.appendChild(datepicker2.div);
+    datepicker2.reloadDateList();
+
+    function loadPage(str_date){
+
+        alert("点击的日期是"+str_date);
+    }
+
+    //常用的起始日期和结束日期，这里设置了每个日历的title，不区分激活按钮，并且把日历的值与span的innerHTML关联起来（使用arr_valuelink属性可以关联input或textview的value）
+    var divs=div_rilis.getElementsByClassName('div_rili');
+    var spans=div_rilis.getElementsByClassName("span_rq");
+    var datepicker1b=new DatePicker("datepicker1b",{pickcallback:function(value,that){
+            var divs=div_rilis.getElementsByClassName('div_rili');
+            divs[0].style.display='none';
+            divs[1].style.display='none';
+            DatePicker.linkValue(value,that)
+        },bannerBackColor:"rgb(0,112,192)",arr_innerlink:[spans[0]],title:"开始日期"});//与react不同这里的spans在onload后不会再重新生成，所以可以直接关联dom对象！！
+    var datepicker2b=new DatePicker("datepicker2b",{pickcallback:function(value,that){
+            var divs=div_rilis.getElementsByClassName('div_rili');
+            divs[0].style.display='none';
+            divs[1].style.display='none';
+            DatePicker.linkValue(value,that)
+        },bannerBackColor:"rgb(0,112,192)",arr_innerlink:[spans[1]],title:"结束日期"});
+    divs[0].appendChild(datepicker1b.div);
+    divs[1].appendChild(datepicker2b.div);
+    datepicker1b.reloadDateList();
+    datepicker2b.reloadDateList();
+</script>
+</html>
